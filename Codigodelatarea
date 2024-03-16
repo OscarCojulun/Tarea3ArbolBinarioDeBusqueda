@@ -1,0 +1,142 @@
+import graphviz
+
+class nodo:
+    def __init__(self, valor):
+        self.numero = numero
+        self.izq = None
+        self.der = None
+
+class ABB:
+    def __init___(self):
+        self.raiz = None
+
+    def insertar(self, numero):
+        self.raiz= self.insertar2(numero, self.raiz)
+
+    def insertar2(self, numero, nodo):
+        if (nodo == None):
+            return nodo(numero)
+        if (numero<nodo.numero):
+            nodo.izquierda = self.insert2(numero, nodo.izquierda)
+        if (numero>nodo.numero):
+            nodo.derecha = self.insert2(numero, nodo.derecha)
+        return nodo
+    def  buscar(self, numero):
+        return self.buscar2(numero, self.raiz)
+
+    def buscar2(self, numero, nodo):
+        if (nodo == None):
+            print("No se encontro el valor dado")
+        if (nodo.numero == numero):
+            print("El valor se encontro")
+            return nodo
+        if (numero<nodo.numero):
+            return self.buscar2(numero,nodo.izquierda)
+        else:
+            return self.buscar2(numero, nodo.derecha)
+    def mostrar(self, numero):
+        if nodo != None:
+            if nodo.izq != None:
+                print(nodo.numero, "-> ", nodo.izq.numero)
+                return nodo
+            if (nodo.der != None):
+                print(nodo.numero, "-> ", nodo.der.numero)
+                return nodo
+    def eliminar(self,numero):
+        self.raiz = self.eliminar_nodo(self.raiz,numero)
+    
+    def eliminar_nodo(self,nodo,numero):
+        if not nodo:
+            print("El numero ingresado no existe en el arbol")
+            return nodo
+        if numero < nodo.numero:
+            nodo.izquierda = self.eliminar_nodo(nodo.izquierda, numero)
+        elif numero > nodo.numero:
+            nodo.derecha = self.eliminar_nodo(nodo.derecha, numero)
+        else:
+            if not nodo.izquierda:
+                return nodo.derecha
+            if not nodo.derecha:
+                return nodo.izquierda
+            aux = self.encontrar_valor_minimo(nodo.derecha)
+            nodo.numero = aux.numero
+            nodo.derecha = self.eliminar_nodo(nodo.derecha,aux.numero)
+        return nodo
+    
+    def encontrar_valor_minimo(self,nodo):
+        while nodo.izquierda:
+            nodo = nodo.izquierda
+        return nodo
+    
+    def cargar_datos_txt(self, nombre_archivo):
+        valores = []
+        with open(nombre_archivo, 'r') as archivo:
+            for linea in archivo:
+                valores.append(int(linea.strip()))
+            self.construir_arbol(valores)
+
+    def construir_arbol(self, valores):
+        if not valores:
+            return print("No hay valores dentro del archivo")
+        valores.sort()
+        self.raiz = self.construir_aux(valores)
+
+    def construir_aux(self, valores):
+        if not valores:
+            return None
+        medio = len(valores)//2
+        nodo = Nodo(valores[medio])
+        nodo.izquierda = self.construir_aux(valores[:medio])
+        nodo.derecha = self.construir_aux(valores[medio+1:])
+        return nodo
+        
+
+    def generar_graphviz(self): 
+        dot = graphviz.Digraph()
+        self.generar_graphivz_Arbol(self.raiz, dot) 
+        return dot 
+    
+    def generar_graphivz_Arbol(self, nodo, dot):
+        if nodo is not None: 
+            dot.node(str(nodo.valor))
+            if nodo.izquierda is not None:
+                dot.edge(str(nodo.valor), str(nodo.izquierda.valor)) 
+                self.generar_graphivz_Arbol(nodo.izquierda, dot) 
+            if nodo.derecha is not None:
+                dot.edge(str(nodo.valor), str(nodo.derecha.valor))
+                self.generar_graphivz_Arbol(nodo.derecha, dot)
+
+
+       
+x= 0
+x2= 0
+numero = 0;
+arbolbinario = ABB()
+print("Opcion 1: Ingresar numero al arbol binario de busqueda")
+print("Opcion 2: Buscar un numero del arbol binario de busqueda")
+print("Opcion 3: Eliminar numero del arbol binario de busqueda")
+print("Opcion 4: Cargar arbol desde un archivo y hacerlo arbol binario de busqueda")
+print("Opcion 5: Generar Graphiz")
+print("Opcion 6: Salir del programa")
+x = input("Seleccione el numero de alguna de las anteriores: ")
+x2 = int(x)
+
+if (x2 == 1):
+    numero = int(input("Ingrese un numero: "))
+    arbolbinario.insertar(numero)
+if (x2 == 2):
+    numero = int(input("Ingrese un numero para buscarlo en el arbol: "))
+    arbolbinario.buscar(numero)
+if (x2 == 3):
+    numero = int(input("Ingrese un numero para eliminar del arbol: "))
+    arbolbinario.eliminar(numero)
+if (x2 == 4):
+   narchivo= input("Ingrese la direccion del archivo: ")
+   arbolbinario.cargar_datos_txt(narchivo)
+if (x2 == 5):
+   dot = arbol.generar_graphviz()
+   dot.render('arbol_binario', format='png', cleanup= True)
+if (x2 == 6):
+   print("Saliendo del programa")
+else:
+   print("No se selecciono ninguna Opcion")
